@@ -1,0 +1,78 @@
+apply {
+    plugin "com.android.library"
+    plugin "kotlin-android"
+}
+
+android {
+    compileSdkVersion Android.compileSdkVersion
+    defaultConfig {
+        minSdkVersion Android.minSdkVersion
+        targetSdkVersion Android.targetSdkVersion
+        versionCode Android.versionCode
+        versionName Android.versionName
+
+        consumerProguardFiles "consumer-rules.pro"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+    lintOptions {
+        abortOnError false
+    }
+}
+
+dependencies {
+    api Deps.kotlin_stdlib
+    //androidx
+    api(Deps.androidx_appcompat) {
+        exclude module: 'core'
+        exclude module: 'fragment'
+        exclude module: 'annotation'
+    }
+    api(Deps.androidx_core_ktx) {
+        exclude module: 'annotation'
+        exclude module: 'kotlin-stdlib'
+    }
+    api Deps.androidx_annotation
+
+    //fragment
+    api(Deps.androidx_fragment) {
+        exclude module: 'core'
+        exclude module: 'annotation'
+        exclude module: 'collection'
+        exclude group: 'androidx.lifecycle'
+    }
+    api(Deps.androidx_navigation_runtime) {
+        exclude module: 'activity'
+        exclude module: 'savedstate'
+        exclude group: 'androidx.lifecycle'
+    }
+
+    //lifecycle
+    api(Deps.lifecycle_runtime) {
+        exclude module: 'annotation'
+    }
+    api(Deps.lifecycle_viewmodel_ktx) {
+        exclude module: 'kotlin-stdlib'
+    }
+    api(Deps.lifecycle_livedata_ktx) {
+        exclude module: 'kotlin-stdlib'
+        exclude module: 'kotlinx-coroutines-core'
+    }
+    api(Deps.lifecycle_common_java8) {
+        exclude module: 'annotation'
+        exclude module: 'lifecycle-common'
+    }
+}
+
+apply from: "${rootDir.path}/config_publish.gradle"
